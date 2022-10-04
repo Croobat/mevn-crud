@@ -5,7 +5,7 @@
         <input class="input" v-model="description" type="text" placeholder="Go to mars..." />
       </div>
       <div class="control">
-        <a class="button is-info" @click="addItem" :disabled="!description">Add</a>
+        <button class="button is-info" @click="addItem" :disabled="!description">Add</button>
       </div>
     </div>
     <div class="notification" v-for="(item, i) in items" :key="item._id">
@@ -17,12 +17,12 @@
         </p>
         <div class="column is-narrow">
           <span class="icon has-text-primary" @click="isSelected(item) ? unselect() : select(item)">
-            <i class="material-icons">{{ isSelected(item) ? 'close': 'edit' }}</i>
+            <i class="material-icons icon">{{ isSelected(item) ? 'close': 'edit' }}</i>
           </span>
         </div>
         <div class="column is-narrow">
           <span class="icon has-text-info" @click="isSelected(item) ? updateItem(item, i) : removeItem(item, i)">
-            <i class="material-icons">{{ isSelected(item) ? 'save': 'delete' }}</i>
+            <i class="material-icons icon">{{ isSelected(item) ? 'save': 'delete' }}</i>
           </span>
         </div>
       </div>
@@ -84,5 +84,9 @@ export default {
   margin: auto;
   margin-top: 3rem;
   max-width: 700px;
+}
+
+.icon {
+  cursor: pointer;
 }
 </style>
