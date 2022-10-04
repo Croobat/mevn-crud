@@ -24,7 +24,7 @@ router.post('/', async (req, res) => {
 
   try {
     const bucketListItem = await newBucketListItem.save()
-    if (!bucketListItem) throw new Error('Something went wrong savimg the bucketListItem')
+    if (!bucketListItem) throw new Error('Something went wrong saving the bucketListItem')
     res.status(200).json(bucketListItem)
   } catch (error) {
     res.status(500).json({ message: error.message })
@@ -37,10 +37,25 @@ router.put('/:id', async (req, res) => {
 
   try {
     const response = await BucketListItem.findByIdAndUpdate(id, req.body)
-    if (!response) throw Error('Something went wrong')
+    if (!response) throw Error('Something went wrong updating')
     const updated = { ...response._doc, ...req.body }
     res.status(200).json(updated)
   } catch (error) {
     res.status(500).json({ message: error.message })
   }
 })
+
+// API delete method
+router.delete('/:id', async (req, res) => {
+  const { id } = req.params
+
+  try {
+    const removed = await BucketListItem.findByIdAndDelete(id)
+    if (!removed) throw Error('Something went wrong deleting')
+    res.status(200).json(removed)
+  } catch (error) {
+    res.status(500).json({ message: error.message })
+  }
+})
+
+module.exports = router
