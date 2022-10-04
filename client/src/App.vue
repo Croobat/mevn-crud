@@ -5,7 +5,7 @@
         <input class="input" v-model="description" type="text" placeholder="Go to mars..." />
       </div>
       <div class="control">
-        <a class="button is-info">Add</a>
+        <a class="button is-info" @click="addItem" :disabled="!description">Add</a>
       </div>
     </div>
     <div class="notification" v-for="(item, i) in items" :key="item._id">
@@ -31,6 +31,13 @@ export default {
   async mounted() {
     const response = await axios.get('api/bucketListItems/')
     this.items = response.data
+  },
+  methods: {
+    async addItem() {
+      const response = await axios.post('api/bucketListItems/', { description: this.description })
+      this.items.push(response.data)
+      this.description = ""
+    }
   }
 }
 </script>
