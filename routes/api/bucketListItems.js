@@ -17,3 +17,16 @@ router.get('/', async (req, res) => {
     res.status(500).json({ message: error.message })
   }
 })
+
+// API post method
+router.post('/', async (req, res) => {
+  const newBucketListItem = new BucketListItem(req.body)
+
+  try {
+    const bucketListItem = await newBucketListItem.save()
+    if (!bucketListItem) throw new Error('Something went wrong savimg the bucketListItem')
+    res.status(200).json(bucketListItem)
+  } catch (error) {
+    res.status(500).json({ message: error.message })
+  }
+})
