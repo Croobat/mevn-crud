@@ -10,13 +10,19 @@
     </div>
     <div class="notification" v-for="(item, i) in items" :key="item._id">
       <div class="columns is-mobile">
-        <p class="column">
+        <input class="column input" v-if="isSelected(item)" v-model="editedDescription" />
+        <p v-else class="column">
           <span class="tag is-primary">{{ i + 1 }}</span>
           {{ item.description }}
         </p>
         <div class="column is-narrow">
-          <span class="icon has-text-info" @click="removeItem(item, i)">
-            <i class="material-icons">delete</i>
+          <span class="icon has-text-primary" @click="isSelected(item) ? unselect() : select(item)">
+            <i class="material-icons">{{ isSelected(item) ? 'close': 'edit' }}</i>
+          </span>
+        </div>
+        <div class="column is-narrow">
+          <span class="icon has-text-info" @click="isSelected(item) ? updateItem(item, i) : removeItem(item, i)">
+            <i class="material-icons">{{ isSelected(item) ? 'save': 'delete' }}</i>
           </span>
         </div>
       </div>
@@ -32,7 +38,9 @@ export default {
   data() {
     return {
       items: [],
-      description: ""
+      description: "",
+      editedDescription: "",
+      selected: {}
     }
   },
   async mounted() {
@@ -48,6 +56,24 @@ export default {
     async removeItem(item, i) {
       await axios.delete("api/bucketListItems/" + item._id)
       this.items.splice(i, 1)
+    },
+    select(item) {
+      this.selected = item
+      this.editedDescription = item.description
+    },
+    unselect(){
+      this.selected = {}
+      this.editedDescription = ""
+    },
+    isSelected(item) {
+      return item._id === this.selected._id;
+    },
+    async updateItem(item, i) {
+      const response = await axios.put("api/bucketListItems/" + item._id, {
+        description: this.editedDescription
+      })
+      this.items[i] = response.data
+      this.unselect()
     }
   }
 }
