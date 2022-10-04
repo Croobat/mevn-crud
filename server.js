@@ -29,6 +29,6 @@ mongoose
 
 app.use('/api/bucketListItems', bucketListItemRoutes)
 
-app.get('/', (req, res) => res.send('Holaa'))
+app.get('/', (req, res) => res.send('Holaa soy la API'))
 
 app.listen(PORT, () => console.log(`App listening at http://localhost:${PORT}`))
