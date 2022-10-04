@@ -9,10 +9,17 @@
       </div>
     </div>
     <div class="notification" v-for="(item, i) in items" :key="item._id">
-      <p>
-        <span class="tag is-primary">{{ i + 1 }}</span>
-        {{ item.description }}
-      </p>
+      <div class="columns is-mobile">
+        <p class="column">
+          <span class="tag is-primary">{{ i + 1 }}</span>
+          {{ item.description }}
+        </p>
+        <div class="column is-narrow">
+          <span class="icon has-text-info" @click="removeItem(item, i)">
+            <i class="material-icons">delete</i>
+          </span>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -37,6 +44,10 @@ export default {
       const response = await axios.post('api/bucketListItems/', { description: this.description })
       this.items.push(response.data)
       this.description = ""
+    },
+    async removeItem(item, i) {
+      await axios.delete("api/bucketListItems/" + item._id)
+      this.items.splice(i, 1)
     }
   }
 }
